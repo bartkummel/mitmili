@@ -2,7 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs)
 
-![Man in the Middle Light](mitmili.png)
+![Man in the Middle Light](icons/icon.png)
+
 A Home Assistant custom integration that creates proxy entities for controlling lights through an override system. 
 This integration allows you to maintain both a default light state and an override state, switching between them with 
 a simple toggle.
