@@ -1,0 +1,28 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Create a Man in the Middle Light that allows you to control a light through two virtual lights with an override switch.",
+        "data": {
+          "source_entity_id": "Source light entity",
+          "name": "Name"
+        }
+      }
+    },
+    "error": {
+      "entity_not_found": "The selected entity does not exist"
+    },
+    "abort": {
+      "already_configured": "A Man in the Middle Light for this light entity already exists"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "source_entity_id": "[%key:component::mitmili::config::step::user::data::source_entity_id%]"
+        }
+      }
+    }
+  }
+}

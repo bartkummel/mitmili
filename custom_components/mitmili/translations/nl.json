@@ -1,0 +1,27 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Er bestaat al een Man in the Middle Light voor deze lamp."
+        },
+        "error": {
+            "entity_not_found": "De geselecteerde entiteit bestaat niet."
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "source_entity_id": "Bron verlichting entiteit"
+                },
+                "description": "Maak een Man in the Middle Light waarmee je een lamp kunt bedienen via twee virtuele lampen en een keuzeschakelaar."
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "data": {
+                    "source_entity_id": "Bron verlichting entiteit"
+                }
+            }
+        }
+    }
+}

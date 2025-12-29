@@ -1,0 +1,15 @@
+{
+  "domain": "mitmili",
+  "name": "Man in the Middle Light",
+  "codeowners": [
+    "@bartkummel"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/mitmili",
+  "integration_type": "helper",
+  "iot_class": "calculated",
+  "quality_scale": "bronze",
+  "requirements": [],
+  "version": "1.0.0"
+}
