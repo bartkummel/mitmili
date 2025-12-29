@@ -84,7 +84,7 @@ flowchart TD
     C --> E[Physical Light]
     D --> E
 
-    style A fill:#000,stroke:#1ABCF2,stroke-width:2px
+    style A fill:#000000,color:#fff,stroke:#1ABCF2,stroke-width:2px
     style B fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
     style C fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
     style D fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
