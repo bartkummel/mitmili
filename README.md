@@ -76,26 +76,19 @@ You can modify the source light entity later through the integration's options.
 
 The integration creates a proxy layer with three entities:
 
-```
-┌─────────────────────────────────────────────────┐
-│                 Your Automations                │
-│                       ↓                         │
-│         ┌─────────────────────────┐             │
-│         │   Overridden Switch     │             │
-│         │   (OFF/ON)              │             │
-│         └─────────────────────────┘             │
-│           ↓                     ↓               │
-│   ┌──────────────┐      ┌──────────────┐        │
-│   │ Proxy Light  │      │Override Light│        │
-│   │ (Default)    │      │  (Manual)    │        │
-│   └──────────────┘      └──────────────┘        │
-│           ↓                     ↓               │
-│           └───────────┬─────────┘               │
-│                       ↓                         │
-│              ┌─────────────────┐                │
-│              │  Physical Light │                │
-│              └─────────────────┘                │
-└─────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A[Your Automations/Scenes] --> B{Overridden Switch<br/>OFF/ON}
+    B -->|OFF| C[Proxy Light<br/>Default]
+    B -->|ON| D[Override Light<br/>Manual]
+    C --> E[Physical Light]
+    D --> E
+
+    style A fill:#000,stroke:#1ABCF2,stroke-width:2px
+    style B fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
+    style C fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
+    style D fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
+    style E fill:#1ABCF2,color:#fff,stroke:#fff,stroke-width:2px
 ```
 
 - When **Overridden Switch is OFF**: Changes to the Proxy Light control the physical light
