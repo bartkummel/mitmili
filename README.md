@@ -200,7 +200,7 @@ Issues and pull requests are welcome on the [GitHub repository](https://github.c
 
 ## License
 
-This integration is provided as-is under the MIT License.
+This integration is provided as-is under the [BSD Zero Clause License](LICENSE.txt).
 
 ## Credits
 
