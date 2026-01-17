@@ -11,5 +11,6 @@
   "iot_class": "calculated",
   "quality_scale": "bronze",
   "requirements": [],
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "issue_tracker": "https://github.com/bartkummel/mitmili/issues"
 }

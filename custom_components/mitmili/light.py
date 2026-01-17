@@ -26,6 +26,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device import async_entity_id_to_device
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
+from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import CONF_SOURCE_ENTITY_ID, DOMAIN, SUFFIX_OVERRIDE, SUFFIX_OVERRIDDEN, SUFFIX_PROXY
 
@@ -49,7 +50,7 @@ async def async_setup_entry(
     async_add_entities([proxy_light, override_light])
 
 
-class ProxyLight(LightEntity):
+class ProxyLight(RestoreEntity, LightEntity):
     """Representation of a Proxy Light."""
 
     _attr_should_poll = False
@@ -201,10 +202,64 @@ class ProxyLight(LightEntity):
 
     async def async_added_to_hass(self) -> None:
         """Handle entity added to hass."""
-        # Copy capabilities from source light
-        self._copy_source_capabilities()
+        await super().async_added_to_hass()
 
-        # Get the switch entity_id
+        # Try to restore capabilities from previous state first
+        last_state = await self.async_get_last_state()
+        capabilities_restored = False
+
+        if last_state and last_state.attributes:
+            _LOGGER.debug(
+                "Light %s: attempting to restore capabilities from previous state",
+                self._attr_name,
+            )
+
+            # Restore supported color modes
+            supported_color_modes = last_state.attributes.get("supported_color_modes")
+            if supported_color_modes and supported_color_modes != [ColorMode.ONOFF]:
+                self._attr_supported_color_modes = set(
+                    ColorMode(mode) for mode in supported_color_modes
+                )
+                capabilities_restored = True
+                _LOGGER.info(
+                    "Light %s: restored color modes from state: %s",
+                    self._attr_name,
+                    self._attr_supported_color_modes,
+                )
+
+            # Restore supported features
+            supported_features = last_state.attributes.get("supported_features")
+            if supported_features is not None and supported_features != 0:
+                self._attr_supported_features = LightEntityFeature(supported_features)
+                capabilities_restored = True
+                _LOGGER.info(
+                    "Light %s: restored features from state: %s",
+                    self._attr_name,
+                    self._attr_supported_features,
+                )
+
+            # Restore color temperature range
+            min_kelvin = last_state.attributes.get("min_color_temp_kelvin")
+            max_kelvin = last_state.attributes.get("max_color_temp_kelvin")
+            if min_kelvin and max_kelvin:
+                self._attr_min_color_temp_kelvin = min_kelvin
+                self._attr_max_color_temp_kelvin = max_kelvin
+
+            # Restore effect list
+            effect_list = last_state.attributes.get("effect_list")
+            if effect_list:
+                self._attr_effect_list = effect_list
+
+        # If no saved state or capabilities weren't restored, copy from source
+        if not capabilities_restored:
+            _LOGGER.debug(
+                "Light %s: no saved capabilities, copying from source light %s",
+                self._attr_name,
+                self._source_entity_id,
+            )
+            self._copy_source_capabilities()
+
+        # Track override switch for state changes
         switch_entity_id = self._get_overridden_switch_entity_id()
         if switch_entity_id:
             _LOGGER.debug(
@@ -212,7 +267,6 @@ class ProxyLight(LightEntity):
                 self._attr_name,
                 switch_entity_id,
             )
-            # Track changes to the overridden switch
             self.async_on_remove(
                 async_track_state_change_event(
                     self.hass, [switch_entity_id], self._handle_overridden_change
